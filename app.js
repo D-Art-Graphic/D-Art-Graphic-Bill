@@ -203,7 +203,8 @@ formItem.addEventListener('submit', (e) => {
     const id = document.getElementById('item-id').value;
     const name = document.getElementById('item-name').value;
     const price = parseFloat(document.getElementById('item-price').value);
-    const stock = parseInt(document.getElementById('item-stock').value, 10);
+    const stockVal = document.getElementById('item-stock').value;
+    const stock = stockVal === '' ? '' : parseInt(stockVal, 10);
 
     if (id) {
         // Edit existing
@@ -236,7 +237,7 @@ function editItem(id) {
         document.getElementById('item-id').value = item.id;
         document.getElementById('item-name').value = item.name;
         document.getElementById('item-price').value = item.price;
-        document.getElementById('item-stock').value = item.stock;
+        document.getElementById('item-stock').value = item.stock === '' ? '' : item.stock;
         modalAddItem.classList.add('active');
     }
 }
@@ -265,8 +266,8 @@ function renderInventory() {
             <td style="font-weight:500;">${item.name}</td>
             <td style="color:var(--secondary-color);">${formatCurrency(item.price)}</td>
             <td>
-                <span class="table-badge ${item.stock <= 5 ? 'badge-low' : 'badge-good'}">
-                    ${item.stock} in stock
+                <span class="table-badge ${item.stock === '' ? 'badge-good' : (item.stock <= 5 ? 'badge-low' : 'badge-good')}">
+                    ${item.stock === '' ? 'Unlimited' : item.stock + ' in stock'}
                 </span>
             </td>
             <td>
@@ -381,7 +382,7 @@ function renderPOSItems(query = '') {
         const el = document.createElement('div');
         el.className = 'pos-item-card';
         // Check if out of stock
-        if (item.stock <= 0) {
+        if (item.stock !== '' && item.stock <= 0) {
             el.style.opacity = '0.5';
             el.style.pointerEvents = 'none';
         }
@@ -392,7 +393,7 @@ function renderPOSItems(query = '') {
             <div class="pos-item-icon">${iconStr}</div>
             <h4>${item.name}</h4>
             <div class="price">${formatCurrency(item.price)}</div>
-            <div class="stock">${item.stock} available</div>
+            <div class="stock">${item.stock === '' ? 'Unlimited' : item.stock + ' available'}</div>
         `;
         
         el.addEventListener('click', () => addToCart(item));
@@ -407,14 +408,14 @@ posSearch.addEventListener('input', (e) => {
 function addToCart(item) {
     const existing = state.cart.find(c => c.item.id === item.id);
     if (existing) {
-        if (existing.qty < item.stock) {
+        if (item.stock === '' || existing.qty < item.stock) {
             existing.qty += 1;
             showToast('Added to cart', 'success');
         } else {
             showToast('Not enough stock!', 'error');
         }
     } else {
-        if (item.stock > 0) {
+        if (item.stock === '' || item.stock > 0) {
             state.cart.push({ item, qty: 1 });
             showToast('Item added to cart', 'success');
         } else {
@@ -432,7 +433,7 @@ function updateCartQty(itemId, change) {
         
         if (newQty <= 0) {
             state.cart.splice(index, 1);
-        } else if (newQty > cartItem.item.stock) {
+        } else if (cartItem.item.stock !== '' && newQty > cartItem.item.stock) {
             showToast('Not enough stock!', 'error');
         } else {
             cartItem.qty = newQty;
@@ -522,7 +523,7 @@ btnGenerateBill.addEventListener('click', () => {
         
         // Deduct stock
         const invItem = state.inventory.find(i => i.id === c.item.id);
-        if (invItem) invItem.stock -= c.qty;
+        if (invItem && invItem.stock !== '') invItem.stock -= c.qty;
 
         return {
             id: c.item.id,
@@ -643,7 +644,7 @@ function restoreBillToCart(id) {
         bill.items.forEach(item => {
             const invItem = state.inventory.find(i => i.id === item.id);
             if(invItem) {
-                invItem.stock += item.qty; // Restore stock so they can check out again
+                if (invItem.stock !== '') invItem.stock += item.qty; // Restore stock so they can check out again
                 state.cart.push({ item: invItem, qty: item.qty });
             }
         });
@@ -668,7 +669,7 @@ function deleteBillAction(id) {
         if (index > -1) {
             state.bills[index].items.forEach(item => {
                 const invItem = state.inventory.find(i => i.id === item.id);
-                if (invItem) invItem.stock += item.qty;
+                if (invItem && invItem.stock !== '') invItem.stock += item.qty;
             });
             state.bills.splice(index, 1);
             saveState();

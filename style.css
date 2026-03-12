@@ -1347,3 +1347,138 @@ header p {
         box-shadow: none;
     }
 }
+
+/* ---- Mobile Responsiveness ---- */
+@media screen and (max-width: 900px) {
+    .pos-container {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .pos-items-section {
+        height: 50vh;
+        min-height: 300px;
+        padding-right: 0;
+    }
+    .pos-cart-section {
+        height: auto;
+        min-height: 400px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #app {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+        flex-direction: row;
+        align-items: center;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        z-index: 20;
+    }
+    
+    .logo {
+        margin-bottom: 0;
+        margin-right: 1.5rem;
+        padding-left: 0;
+    }
+    
+    .logo h2 {
+        display: none;
+    }
+    
+    .nav-links {
+        flex-direction: row;
+        overflow-x: auto;
+        flex: 1;
+        gap: 0.5rem;
+        padding-bottom: 5px;
+    }
+    
+    .nav-links::-webkit-scrollbar {
+        height: 0px; 
+    }
+    
+    .nav-links li {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        gap: 8px;
+    }
+    
+    .main-content {
+        padding: 1.5rem 1rem;
+        height: calc(100vh - 80px);
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .header-right {
+        align-self: flex-end;
+        position: absolute;
+        top: 1.5rem;
+        right: 1rem;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .data-table th, .data-table td {
+        white-space: nowrap;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .nav-links li {
+        padding: 10px;
+        font-size: 0; 
+    }
+    
+    .nav-links li i {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    .cart-actions {
+        flex-direction: column;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .cart-item-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .stats-grid {
+        gap: 1rem;
+    }
+    
+    header h1 {
+        font-size: 1.6rem;
+    }
+}
