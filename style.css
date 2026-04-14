@@ -1310,7 +1310,7 @@ header p {
 /* Print Styles / Scaling for Download */
 @media print {
     @page {
-        size: 2480px 1748px;
+        size: 1240px 874px;
         margin: 0;
     }
 
@@ -1327,8 +1327,8 @@ header p {
         position: absolute;
         left: 0;
         top: 0;
-        width: 2480px;
-        height: 1748px;
+        width: 1240px;
+        height: 874px;
         background: white;
         box-shadow: none;
         border: none;
@@ -1341,8 +1341,8 @@ header p {
     }
 
     .bill-print-area {
-        width: 2480px;
-        min-height: 1748px;
+        width: 1240px;
+        min-height: 874px;
         margin: 0;
         padding: 100px 150px;
         box-shadow: none;
