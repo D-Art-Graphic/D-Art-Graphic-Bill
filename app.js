@@ -752,7 +752,7 @@ document.getElementById('btn-download-pdf').addEventListener('click', () => {
         margin: 0,
         filename: `bill_${billId}.pdf`,
         image: { type: 'jpeg', quality: 1.0 },
-        html2canvas: { scale: 0.5, useCORS: true },
+        html2canvas: { scale: 0.4, useCORS: true },
         jsPDF: { unit: 'px', format: [1748, 2480], orientation: 'landscape' }
     };
 
