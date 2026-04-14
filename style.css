@@ -1087,6 +1087,7 @@ header p {
 }
 
 
+
 /* Bill Template / Print Area Full Screen View */
 .bill-print-area {
     background-color: #ffffff;
@@ -1310,7 +1311,7 @@ header p {
 /* Print Styles / Scaling for Download */
 @media print {
     @page {
-        size: 1240px 874px;
+        size: 2480px 1748px;
         margin: 0;
     }
 
@@ -1327,8 +1328,8 @@ header p {
         position: absolute;
         left: 0;
         top: 0;
-        width: 1240px;
-        height: 874px;
+        width: 2480px;
+        height: 1748px;
         background: white;
         box-shadow: none;
         border: none;
