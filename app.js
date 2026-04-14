@@ -752,8 +752,11 @@ document.getElementById('btn-download-pdf').addEventListener('click', () => {
         margin: 0,
         filename: `bill_${billId}.pdf`,
         image: { type: 'jpeg', quality: 1.0 },
-        html2canvas: { scale: 0.4, useCORS: true },
-        jsPDF: { unit: 'px', format: [2400, 2480], orientation: 'portrait' }
+        html2canvas: { dpi: 192, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
+
+        /* html2canvas: { dpi: 192 scale: 0.4, useCORS: true },
+        jsPDF: { unit: 'px', format: [2400, 2480], orientation: 'portrait' } */
     };
 
     html2pdf().set(opt).from(element).save();
