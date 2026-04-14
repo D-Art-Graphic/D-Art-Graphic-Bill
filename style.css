@@ -1092,8 +1092,8 @@ header p {
     color: #1e293b;
     padding: 100px 150px;
     font-family: 'Inter', sans-serif;
-    width: 2245px;
-    min-height: 1587px;
+    width: 100%;
+    /*min-height: 1587px;*/
     box-sizing: border-box;
     margin: 0 auto;
     position: relative;
