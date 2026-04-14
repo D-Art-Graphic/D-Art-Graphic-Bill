@@ -1,24 +1,24 @@
 // State Management
 // State Management
 const safeStorage = {
-    getItem: (key) => { 
-        try { 
-            const val = localStorage.getItem(key); 
+    getItem: (key) => {
+        try {
+            const val = localStorage.getItem(key);
             if (!val) return null;
             return JSON.parse(val);
-        } catch(e) { 
-            return null; 
-        } 
+        } catch (e) {
+            return null;
+        }
     },
-    setItem: (key, val) => { 
-        try { 
-            localStorage.setItem(key, JSON.stringify(val)); 
-        } catch(e) {} 
+    setItem: (key, val) => {
+        try {
+            localStorage.setItem(key, JSON.stringify(val));
+        } catch (e) { }
     },
-    removeItem: (key) => { 
-        try { 
-            localStorage.removeItem(key); 
-        } catch(e) {} 
+    removeItem: (key) => {
+        try {
+            localStorage.removeItem(key);
+        } catch (e) { }
     }
 };
 
@@ -65,17 +65,17 @@ function formatDate(dateString) {
 function showToast(message, type = 'info') {
     const container = document.getElementById('toast-container');
     if (!container) return;
-    
+
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    
+
     let icon = 'fa-info-circle';
     if (type === 'success') icon = 'fa-check-circle';
     if (type === 'error') icon = 'fa-exclamation-circle';
-    
+
     toast.innerHTML = `<i class="fas ${icon}"></i> <span style="font-weight:600">${message}</span>`;
     container.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.classList.add('fade-out');
         setTimeout(() => toast.remove(), 400);
@@ -159,11 +159,11 @@ navLinks.forEach(link => {
     link.addEventListener('click', () => {
         const tab = link.getAttribute('data-tab');
         if (!tab) return;
-        
+
         // Remove active class
         navLinks.forEach(l => l.classList.remove('active'));
         views.forEach(v => v.classList.remove('active'));
-        
+
         // Add active class
         link.classList.add('active');
         document.getElementById(`view-${tab}`).classList.add('active');
@@ -253,7 +253,7 @@ function deleteItem(id) {
 
 function renderInventory() {
     inventoryTableBody.innerHTML = '';
-    
+
     if (state.inventory.length === 0) {
         inventoryTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#94a3b8;">No items in inventory.</td></tr>`;
         return;
@@ -368,8 +368,8 @@ function renderPOS() {
 
 function renderPOSItems(query = '') {
     posItemList.innerHTML = '';
-    const filtered = state.inventory.filter(i => 
-        i.name.toLowerCase().includes(query.toLowerCase()) || 
+    const filtered = state.inventory.filter(i =>
+        i.name.toLowerCase().includes(query.toLowerCase()) ||
         i.id.toLowerCase().includes(query.toLowerCase())
     );
 
@@ -388,14 +388,14 @@ function renderPOSItems(query = '') {
         }
 
         const iconStr = item.name.charAt(0).toUpperCase();
-        
+
         el.innerHTML = `
             <div class="pos-item-icon">${iconStr}</div>
             <h4>${item.name}</h4>
             <div class="price">${formatCurrency(item.price)}</div>
             <div class="stock">${item.stock === '' ? 'Unlimited' : item.stock + ' available'}</div>
         `;
-        
+
         el.addEventListener('click', () => addToCart(item));
         posItemList.appendChild(el);
     });
@@ -430,7 +430,7 @@ function updateCartQty(itemId, change) {
     if (index > -1) {
         const cartItem = state.cart[index];
         const newQty = cartItem.qty + change;
-        
+
         if (newQty <= 0) {
             state.cart.splice(index, 1);
         } else if (cartItem.item.stock !== '' && newQty > cartItem.item.stock) {
@@ -484,7 +484,7 @@ function renderCart() {
 
     const discountAmount = subtotal * (state.discount / 100);
     const total = subtotal - discountAmount;
-    
+
     let advance = parseFloat(cartAdvanceEl.value) || 0;
     if (advance < 0) advance = 0;
     const balance = total - advance;
@@ -495,7 +495,7 @@ function renderCart() {
 }
 
 btnClearCart.addEventListener('click', () => {
-    if(state.cart.length > 0 && confirm("Clear current bill?")) {
+    if (state.cart.length > 0 && confirm("Clear current bill?")) {
         state.cart = [];
         state.discount = 0;
         cartDiscountEl.value = 0;
@@ -520,7 +520,7 @@ btnGenerateBill.addEventListener('click', () => {
     const billItems = state.cart.map(c => {
         const t = c.item.price * c.qty;
         subtotal += t;
-        
+
         // Deduct stock
         const invItem = state.inventory.find(i => i.id === c.item.id);
         if (invItem && invItem.stock !== '') invItem.stock -= c.qty;
@@ -546,7 +546,7 @@ btnGenerateBill.addEventListener('click', () => {
             .map(b => b.id.match(/^INV-(\d+)$/))
             .filter(m => m)
             .map(m => parseInt(m[1], 10));
-        
+
         if (validIds.length > 0) {
             nextInvoiceId = Math.max(...validIds) + 1;
         } else {
@@ -643,7 +643,7 @@ function restoreBillToCart(id) {
         state.cart = [];
         bill.items.forEach(item => {
             const invItem = state.inventory.find(i => i.id === item.id);
-            if(invItem) {
+            if (invItem) {
                 if (invItem.stock !== '') invItem.stock += item.qty; // Restore stock so they can check out again
                 state.cart.push({ item: invItem, qty: item.qty });
             }
@@ -694,7 +694,7 @@ function showBillModal(bill) {
     document.getElementById('print-bill-date').innerText = formatDate(bill.date);
     document.getElementById('print-cust-name').innerText = bill.customerName || '-';
     document.getElementById('print-cust-phone').innerText = bill.customerPhone ? `${bill.customerPhone}` : '';
-    
+
     const itemsTbody = document.getElementById('print-bill-items');
     itemsTbody.innerHTML = '';
     bill.items.forEach(item => {
@@ -709,7 +709,7 @@ function showBillModal(bill) {
     });
 
     document.getElementById('print-bill-subtotal').innerText = 'Rs ' + bill.subtotal.toFixed(2);
-    
+
     const discountRow = document.getElementById('print-bill-discount-row');
     if (bill.discountAmount > 0) {
         discountRow.style.display = 'flex';
@@ -722,7 +722,7 @@ function showBillModal(bill) {
 
     const advRow = document.getElementById('print-bill-advance-row');
     const balRow = document.getElementById('print-bill-balance-row');
-    
+
     if (bill.advance > 0 && bill.balance > 0) {
         if (advRow) {
             advRow.style.display = 'flex';
@@ -747,13 +747,13 @@ document.getElementById('btn-print').addEventListener('click', () => {
 document.getElementById('btn-download-pdf').addEventListener('click', () => {
     const element = document.getElementById('bill-print-area');
     const billId = document.getElementById('print-bill-id').innerText;
-    
+
     const opt = {
-        margin:       0,
-        filename:     `bill_${billId}.pdf`,
-        image:        { type: 'jpeg', quality: 1.0 },
-        html2canvas:  { scale: 1, useCORS: true },
-        jsPDF:        { unit: 'px', format: [500, 500], orientation: 'landscape' }
+        margin: 0,
+        filename: `bill_${billId}.pdf`,
+        image: { type: 'jpeg', quality: 1.0 },
+        html2canvas: { scale: 1, useCORS: true },
+        jsPDF: { unit: 'px', format: [3508, 2480], orientation: 'landscape' }
     };
 
     html2pdf().set(opt).from(element).save();
@@ -761,9 +761,9 @@ document.getElementById('btn-download-pdf').addEventListener('click', () => {
 
 // Profile & Users Management
 function renderProfile() {
-    if(!currentUser) return;
+    if (!currentUser) return;
     const myBills = state.bills.filter(b => b.createdBy === currentUser.username);
-    
+
     let totalBusinessCalc = 0;
     myBills.forEach(b => { totalBusinessCalc += b.total; });
 
@@ -779,18 +779,18 @@ function renderProfile() {
 
     const tbEl = document.getElementById('profile-total-business');
     const dcEl = document.getElementById('profile-daily-collection');
-    if(tbEl) tbEl.innerText = formatCurrency(totalBusinessCalc);
-    if(dcEl) dcEl.innerText = formatCurrency(dailyCollection);
+    if (tbEl) tbEl.innerText = formatCurrency(totalBusinessCalc);
+    if (dcEl) dcEl.innerText = formatCurrency(dailyCollection);
 }
 
 document.getElementById('nav-end-day').addEventListener('click', () => {
-    if(confirm("Are you sure you want to end the day? This will clear today's collections for your profile.")) {
+    if (confirm("Are you sure you want to end the day? This will clear today's collections for your profile.")) {
         let changed = false;
         state.bills.forEach(b => {
-             if(b.createdBy === currentUser.username && !b.day_ended) {
-                 b.day_ended = true;
-                 changed = true;
-             }
+            if (b.createdBy === currentUser.username && !b.day_ended) {
+                b.day_ended = true;
+                changed = true;
+            }
         });
         if (changed) {
             saveState();
@@ -815,14 +815,14 @@ document.getElementById('form-user').addEventListener('submit', (e) => {
     const name = document.getElementById('user-name').value.trim();
     const pass = document.getElementById('user-password').value.trim();
     const role = document.getElementById('user-role').value;
-    
+
     if (originalName) {
         const u = state.users.find(x => x.username === originalName);
         if (u) {
             u.username = name;
             u.password = pass;
             u.role = role;
-            if(currentUser.username === originalName) currentUser = u; // Update current user if editing self
+            if (currentUser.username === originalName) currentUser = u; // Update current user if editing self
         }
     } else {
         if (state.users.find(x => x.username === name)) {
@@ -831,7 +831,7 @@ document.getElementById('form-user').addEventListener('submit', (e) => {
         }
         state.users.push({ username: name, password: pass, role: role });
     }
-    
+
     saveState();
     safeStorage.setItem('dart_currentUser', currentUser);
     modalAddUser.classList.remove('active');
@@ -839,9 +839,9 @@ document.getElementById('form-user').addEventListener('submit', (e) => {
     showToast('User saved successfully!', 'success');
 });
 
-window.editUser = function(username) {
+window.editUser = function (username) {
     const u = state.users.find(x => x.username === username);
-    if(u) {
+    if (u) {
         document.getElementById('user-original-name').value = u.username;
         document.getElementById('user-name').value = u.username;
         document.getElementById('user-password').value = u.password;
@@ -850,8 +850,8 @@ window.editUser = function(username) {
     }
 };
 
-window.deleteUser = function(username) {
-    if(confirm('Delete user?')) {
+window.deleteUser = function (username) {
+    if (confirm('Delete user?')) {
         state.users = state.users.filter(x => x.username !== username);
         saveState();
         renderUsers();
@@ -861,13 +861,13 @@ window.deleteUser = function(username) {
 
 function renderUsers() {
     const tbody = document.getElementById('users-table-body');
-    if(!tbody) return;
+    if (!tbody) return;
     tbody.innerHTML = '';
     state.users.forEach(u => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="font-weight:600;">${u.username}</td>
-            <td><span class="table-badge ${u.role==='admin'?'badge-good':'badge-low'}">${u.role.toUpperCase()}</span></td>
+            <td><span class="table-badge ${u.role === 'admin' ? 'badge-good' : 'badge-low'}">${u.role.toUpperCase()}</span></td>
             <td>
                 <button class="btn btn-secondary btn-icon" onclick="editUser('${u.username}')"><i class="fas fa-pen"></i></button>
                 ${u.username !== 'admin' ? `<button class="btn btn-secondary btn-icon" style="color:var(--danger-color);" onclick="deleteUser('${u.username}')"><i class="fas fa-trash"></i></button>` : ''}
