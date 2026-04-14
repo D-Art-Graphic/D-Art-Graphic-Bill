@@ -1097,7 +1097,7 @@ header p {
     box-sizing: border-box;
     margin: 0 auto;
     position: relative;
-    /* box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);*/
+     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     flex-shrink: 0;
 }
 
