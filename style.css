@@ -1092,12 +1092,12 @@ header p {
     color: #1e293b;
     padding: 100px 150px;
     font-family: 'Inter', sans-serif;
-    width: 2480px;
-    min-height: 1748px;
+    width: 2245px;
+    min-height: 1587px;
     box-sizing: border-box;
     margin: 0 auto;
     position: relative;
-     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     flex-shrink: 0;
 }
 
