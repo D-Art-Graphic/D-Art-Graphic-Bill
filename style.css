@@ -1112,14 +1112,14 @@ header p {
 }
 
 .lh-left {
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: flex-start;
 }
 
 .lh-brand {
-    font-size: 20px;
-    font-weight: 100;
+    font-size: 100px;
+    font-weight: 900;
     color: #7c3aed;
     text-transform: uppercase;
     letter-spacing: 5px;
@@ -1186,7 +1186,7 @@ header p {
 }
 
 .bill-table {
-    width: 50%;
+    width: 100%;
     border-collapse: collapse;
 }
 
@@ -1341,8 +1341,8 @@ header p {
     }
 
     .bill-print-area {
-        width: 1240px;
-        min-height: 874px;
+        width: 2480px;
+        min-height: 1748px;
         margin: 0;
         padding: 100px 150px;
         box-shadow: none;
